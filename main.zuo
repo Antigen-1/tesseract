@@ -34,6 +34,6 @@
       (list build-tesseract (input-file-target "./ocr.rkt"))
       (lambda ()
         (define raco (find-executable-path "raco"))
-        (if raco (process-wait (hash-ref (process raco (list "pkg" "install" "--type" "file" "ocr.rkt")) 'process)) (error "raco : not found.")))))))
+        (if raco (process-wait (hash-ref (process raco (list "pkg" "install" "--link" "../qcr")) 'process)) (error "raco : not found.")))))))
 
 (build/command-line (list clean build-tesseract install-pkg))
