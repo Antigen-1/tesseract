@@ -8,14 +8,14 @@
 
 (define-runtime-path libdir "./shared/lib")
 
-(define tesseract (ffi-lib "libtesseract" (list "5" #f) #:get-lib-dirs (lambda () (list libdir))))
+(define tesseract (ffi-lib "libtesseract" #f #:get-lib-dirs (lambda () (list libdir))))
 (define-ffi-definer define-tesseract tesseract)
 
-(define-tesseract TessResultRenderer_p (_cpointer/null 'TessResultRenderer))
-(define-tesseract TessBaseAPI_p (_cpointer 'TessBaseAPI))
+(define TessResultRenderer_p (_cpointer/null 'TessResultRenderer))
+(define TessBaseAPI_p (_cpointer 'TessBaseAPI))
 
 (define-tesseract TessVersion (_fun -> _string))
-(define-tesseract TessCreateBaseAPI (_fun -> TessBaseAPI_p))
+(define-tesseract TessBaseAPICreate (_fun -> TessBaseAPI_p))
 (define-tesseract TessBaseAPIDelete (_fun TessBaseAPI_p -> _void))
 (define-tesseract TessBaseAPIInit3
   (_fun (a : TessBaseAPI_p) _path _string -> (r : _int)
@@ -26,7 +26,7 @@
 
 (define process
   (lambda (tessdata-prefix lang filename)
-    (define api (TessCreateBaseAPI))
+    (define api (TessBaseAPICreate))
     (TessBaseAPIInit3 api tessdata-prefix lang)
     (define bytes (TessBaseAPIProcessPages api filename #f 0 #f))
     (TessBaseAPIDelete api)
