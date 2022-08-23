@@ -13,16 +13,17 @@
 Table of Contents
 =================
 
-* [Tesseract OCR](#tesseract-ocr)
-   * [About](#about)
-   * [Brief history](#brief-history)
-   * [Installing Tesseract](#installing-tesseract)
-   * [Running Tesseract](#running-tesseract)
-   * [For developers](#for-developers)
-   * [Support](#support)
-   * [License](#license)
-   * [Dependencies](#dependencies)
-   * [Latest Version of README](#latest-version-of-readme)
+- [Tesseract OCR](#tesseract-ocr)
+- [Table of Contents](#table-of-contents)
+  - [About](#about)
+  - [Brief history](#brief-history)
+  - [Installing Tesseract](#installing-tesseract)
+  - [Running Tesseract](#running-tesseract)
+  - [For developers](#for-developers)
+  - [Support](#support)
+  - [License](#license)
+  - [Dependencies](#dependencies)
+  - [Latest Version of README](#latest-version-of-readme)
 
 
 ## About
@@ -115,7 +116,7 @@ Please report an issue only for a **bug**, not for asking questions.
 
 ## License
 
-    The code in this repository is licensed under the Apache License, Version 2.0 (the "License");
+    The code of Tesseract is licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
@@ -126,6 +127,8 @@ Please report an issue only for a **bug**, not for asking questions.
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+Aside from Tesseract, the code in [ocr.rkt](ocr.rkt) and [main.zuo](main.zuo) is licensed under LGPL-3.0-only.
 
 **NOTE**: This software depends on other packages that may be licensed under different open source licenses.
 
