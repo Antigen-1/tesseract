@@ -21,13 +21,15 @@
   (_fun (a : TessBaseAPI_p) _path _string -> (r : _int)
         -> (if (zero? r) (void) (begin (TessBaseAPIDelete a) (error "TessBaseAPIInit3 : fail.")))))
 (define-tesseract TessBaseAPIProcessPages
-  (_fun (a : TessBaseAPI_p) _path _bytes _int TessResultRenderer_p -> (r : _bytes)
-        -> (if r r (begin (TessBaseAPIDelete a) (error "TessBaseAPIProcessPages : fail.")))))
+  (_fun (a : TessBaseAPI_p) _path _bytes _int TessResultRenderer_p -> (r : _int)
+        -> (if (not (zero? r)) r (begin (TessBaseAPIDelete a) (error "TessBaseAPIProcessPages : fail.")))))
+(define-tesseract TessBaseAPIGetUTF8Text (_fun TessBaseAPI_p -> _string))
 
 (define process
   (lambda (tessdata-prefix lang filename)
     (define api (TessBaseAPICreate))
     (TessBaseAPIInit3 api tessdata-prefix lang)
-    (define bytes (TessBaseAPIProcessPages api filename #f 0 #f))
+    (TessBaseAPIProcessPages api (path->complete-path filename) #f 0 #f)
+    (define bytes (TessBaseAPIGetUTF8Text api))
     (TessBaseAPIDelete api)
     bytes))
