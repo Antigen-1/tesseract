@@ -1,0 +1,39 @@
+;;Copyright 2022 ZhangHao
+;;本程序是自由软件：你可以再分发之和/或依照由自由软件基金会发布的 GNU 通用公共许可证修改之，无论是版本 3 许可证，还是（按你的决定）任何以后版都可以。
+;;发布该程序是希望它能有用，但是并无保障;甚至连可销售和符合某个特定的目的都不保证。请参看 GNU 通用公共许可证，了解详情。
+;;你应该随程序获得一份 GNU 通用公共许可证的复本。如果没有，请看 <https://www.gnu.org/licenses/>。
+#lang zuo
+
+(define clean
+  (target
+   'clean
+   (lambda (token)
+     (phony-rule
+      (list)
+      (lambda ()
+        (rm* "./shared")
+        (rm* "./compiled")
+        (process-wait (hash-ref (shell "make clean") 'process)))))))
+
+(define build-tesseract
+  (target
+   'build-tesseract
+   (lambda (token)
+     (phony-rule
+      (map input-file-target (list "./autogen.sh" "./configure.ac" "./Makefile.am"))
+      (lambda ()
+        (process-wait (hash-ref (shell "./autogen.sh") 'process))
+        (process-wait (hash-ref (shell (~a "./configure --prefix=" (hash-ref (runtime-env) 'dir) "/shared && make && sudo make install")) 'process))
+        (process-wait (hash-ref (shell "sudo ldconfig") 'process)))))))
+
+(define install-pkg
+  (target
+   'install-pkg
+   (lambda (token)
+     (phony-rule
+      (list build-tesseract (input-file-target "./ocr.rkt"))
+      (lambda ()
+        (define raco (find-executable-path "raco"))
+        (if raco (process-wait (hash-ref (process raco (list "pkg" "install" "--link" "../tesseract")) 'process)) (error "raco : not found.")))))))
+
+(build/command-line (list clean build-tesseract install-pkg))
